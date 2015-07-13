@@ -7,7 +7,12 @@ import java.io.IOException;
 public class Main {
 
 	public static void main(String[] args) {
-        new Main(args[0]);
+		if (args.length > 0) {
+			new Main(args[0]);
+		} else {
+			System.out.println("No filename given");
+		}
+        
 	}
 	
 	public Main(String fileName) {
@@ -27,10 +32,34 @@ public class Main {
 	}
 
 	public void parse(BufferedReader br) throws IOException {
-	    String line = null;
-		while((line = br.readLine()) != null) {
-	        System.out.println(line);
+	    int character = -1;
+	    boolean ignoreSpace = false;
+	    String word = "";
+		while((character = br.read()) != -1) {
+			if(character == ' ' && !ignoreSpace) {
+				// end line
+				if(word.length() > 0) {
+					System.out.println(word);
+					word = "";
+				}
+			} else if(character == ',' || character == '\n') {
+				if(word.length() > 0) {
+					System.out.println(word);
+					System.out.println("END OF STATEMENT: "+character);
+					word = "";
+				}
+			} else {
+				if(character == '"') {
+					if(ignoreSpace) {
+						ignoreSpace = false;
+					} else {
+						ignoreSpace = true;
+					}
+				}
+				word+=(char)character;
+			}
 	    }
+		System.out.println("END OF FILE");
 	    br.close();
 	}
 }
