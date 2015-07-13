@@ -1,0 +1,4 @@
+"sup world" call it myMixTape,
+60 call it thisVar,
+finna doin it bout thisVar times,
+  spitfire myMixTape,
