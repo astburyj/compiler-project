@@ -1,0 +1,401 @@
+package BostonianCode;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.HashMap;
+
+public class Parser extends Lexer
+{
+	HashMap<String, String> keywords = new HashMap<String, String>();
+
+	public void run(String textDoc)
+	{
+		keywords.put("keyword_Wicked","Wicked");
+		keywords.put("keyword_Boston","Boston");
+		keywords.put("keyword_Tourist","Tourist");
+		keywords.put("keyword_visit","visit");
+		keywords.put("keyword_StateHouse","State House");
+		keywords.put("keyword_PublicGarden","Public Gardens");
+		keywords.put("keyword_NorthEnd","North End");
+		keywords.put("keyword_GoHom","Go Home");
+		keywords.put("keyword_MBTA","MBTA");
+		keywords.put("keyword_TLines","TLines");
+		keywords.put("keyword_RedLine","RedLine");
+		keywords.put("keyword_GreenLine","GreenLine");
+		keywords.put("keyword_BlueLine","BlueLine");
+		keywords.put("keyword_SilverLine","SilverLine");
+		keywords.put("keyword_OrangeLine","OrangeLine");
+		keywords.put("keyword_TravelExpense","TravelExpense");
+		keywords.put("keyword_if","if");
+		keywords.put("keyword_else","else");
+		keywords.put("keyword_SportsGame","SportsGame");
+		keywords.put("keyword_Restaurants","Restaurants");
+		keywords.put("keyword_NightLife","NightLife");
+		keywords.put("keyword_prices","prices");
+		keywords.put("keyword_MassPike","MassPike");
+
+
+		try 
+		{
+			file = new File(textDoc);
+			inputStream = new FileReader(file);
+			
+			getChar();
+			lex();
+
+			expr();
+
+		} catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	private void program()
+	{
+		
+		System.out.println("Enter <program>");
+		if(nextToken == IDENT && lexeme.equals(keywords.get("keyword_Wicked"))
+		{
+
+			lex();
+			if(nextToken == IDENT && lexeme.equals(keywords.get("keyword_Boston")))
+			{
+					statements();
+					if(lexeme.equals(keywords.get("keyword_tourist")))
+					{
+						lex();
+						if(nextToken == EOF){
+							return;
+						}else{
+							error(lexeme);
+						}
+					}
+					else{
+						error(lexeme);
+					}
+				}
+				else{
+					error(lexeme);	
+				}
+			}
+
+
+		System.out.println("Exit <program>");
+	}
+	private void statements()
+	{
+		System.out.println("Enter <statements>");
+		lex();
+		statement();
+		while( nextToken == IDENT && 
+			 ( lexeme.equals(keywords.get("keyword_visit"))
+			|| lexeme.equals(keywords.get("keyword_MBTA"))
+			|| lexeme.equals(keywords.get("keyword_MassPike"))
+			|| lexeme.equals(keywords.get("keyword_if"))
+			|| lexeme.equals(keywords.get("keyword_SportsGame"))
+			|| lexeme.equals(keywords.get("keyword_Restaurants"))
+			|| lexeme.equals(keywords.get("keyword_NightLife"))
+		))
+		{
+			statement();
+		}
+		
+		System.out.println("Exit <statements>");
+	}
+
+	private void statement()
+	{
+		System.out.println("Enter <statement>");
+		if( lexeme.equals(keywords.get("keyword_visit")) )
+		{
+			visit();
+		}
+		else if( lexeme.equals(keywords.get("keyword_MBTA")) )
+		{
+			MBTA();
+		}
+		else if( lexeme.equals(keywords.get("keyword_MassPike")) )
+		{
+			MassPike();
+		}
+		else if( lexeme.equals(keywords.get("keyword_if")) )
+		{
+			if_statement();
+		}
+		else if(  lexeme.equals(keywords.get("keyword_SportsGame"))
+				|| lexeme.equals(keywords.get("keyword_Restaurants"))
+				|| lexeme.equals(keywords.get("keyword_NightLife")))
+		{
+			var();
+			if(nextToken == ASSIGN_OP){
+				expr();
+			}
+			else
+			{
+				error(lexeme);
+			}
+		}
+		else {
+			error(lexeme);
+		}
+		
+		System.out.println("Exit <statement>");
+	}
+	private void visit() {
+		// TODO Auto-generated method stub
+		
+	}
+	private void expr()
+	{
+		System.out.println("Enter <expr>");
+		
+		lex();
+		
+		if( lexeme.equals(keywords.get("keyword_TravelExpense")) ){
+			lex();
+			TravelExpenses();
+		}else if( lexeme.equals(keywords.get("keyword_prices")) ){
+			lex();
+			prices();
+		}else{
+			error(lexeme);
+		}
+		
+		System.out.println("Exit <expr>");
+	}
+	private void prices()
+	{
+		System.out.println("Enter <prices>");
+		
+		if( nextToken == ASSIGN_OP ){
+			lex();
+			if(nextToken == INT_LIT){
+				lex();
+				if(nextToken == MULT_OP){
+					lex();
+					if(nextToken == INT_LIT){
+						lex();
+					}else{
+						error(lexeme);
+					}
+				}else{
+					error(lexeme);
+				}
+			}else{
+				error(lexeme);
+			}
+		}else{
+			error(lexeme);
+		}
+		
+		
+		System.out.println("Exit <prices>");
+	}
+
+private void TravelExpenses()
+	{
+		System.out.println("Enter <TravelExpenses>");
+		
+		if( nextToken == ASSIGN_OP ){
+			lex();
+			if(nextToken == INT_LIT){
+				lex();
+				if(nextToken == ADD_OP){
+					lex();
+					if(nextToken == ASSIGN_OP){
+						lex();
+						if(nextToken == INT_LIT){
+							lex();
+							while(nextToken == ADD_OP){
+								lex();
+								if(nextToken == ASSIGN_OP){
+									lex();
+									if(nextToken == INT_LIT){
+										lex();
+									}else{
+										error(lexeme);
+									}
+								}else{
+									error(lexeme);
+								}
+							} // END LOOP
+						}else{
+							error(lexeme);
+						}
+					}else{
+						error(lexeme);
+					}
+				}else{
+					error(lexeme);
+				}
+			}else{
+				error(lexeme);
+			}
+		}else{
+			error(lexeme);
+		}
+		
+		System.out.println("Exit <TravelExpenses>");
+	}
+	private void var()
+	{
+		System.out.println("Enter <var>");
+		
+		lex();
+		
+		System.out.println("Exit <var>");
+	}
+
+	private void if_statement()
+	{
+		System.out.println("Enter <if_statement>");
+		
+		lex();
+		
+		logic_expr();
+		
+		if(nextToken == LEFT_Bracket ){
+			statements();
+			if(nextToken == Right_Bracket ){
+				lex();
+			}else{
+				error(lexeme);
+			}
+		}else{
+			error(lexeme);
+		}
+		if( lexeme.equals(keywords.get("keyword_else")) ){
+			
+			if(nextToken == LEFT_Bracket ){
+				statements();
+				if(nextToken == Right_Bracket ){
+					lex();
+				}else{
+					error(lexeme);
+				}
+			}else{
+				error(lexeme);
+			}
+		}
+		
+		System.out.println("Exit <if_statement>");
+	}
+	private void logic_expr()
+	{
+		System.out.println("Enter <logic_expr>");
+		
+		if( nextToken == LEFT_PAREN ){
+			lex();
+			if(  lexeme.equals(keywords.get("keyword_SportsGame"))
+			  || lexeme.equals(keywords.get("keyword_Restaurants"))
+		      || lexeme.equals(keywords.get("keyword_NightLife"))){
+				var();
+				if(  nextToken == greater_than || nextToken == less_than ){
+					compare();
+					if(  lexeme.equals(keywords.get("keyword_SportsGame"))
+					  || lexeme.equals(keywords.get("keyword_Restaurants"))
+				      || lexeme.equals(keywords.get("keyword_NightLife"))){
+						var();
+						if(nextToken == RIGHT_PAREN)
+						{
+							lex();
+						}
+						else{
+							error(lexeme);
+						}
+					}else{
+						error(lexeme);
+					}
+				}else{
+					error(lexeme);
+				}
+			}else{
+				error(lexeme);
+			}
+		}else{
+			error(lexeme);
+		}
+		
+		System.out.println("Exit <logic_expr>");
+	}
+	private void compare()
+	{
+		System.out.println("Enter <logic_expr>");
+		
+		lex();
+		
+		System.out.println("Enter <compare>");
+	}
+
+	private void MBTA()
+	{
+		System.out.println("Enter <MBTA>");
+		
+		lex();
+		
+		if(lexeme.equals(keywords.get("keyword_travel"))){
+			lex();
+			if(nextToken == INT_LIT){
+				lex();
+				if(nextToken == LEFT_Bracket){
+					statements();
+					if(nextToken == Right_Bracket){
+						lex();
+					}else{
+						error(lexeme);
+					}
+				}else{
+					error(lexeme);
+				}
+			}else{
+				error(lexeme);
+			}
+		}else{
+			error(lexeme);
+		}
+		
+		System.out.println("Exit <MBTA>");
+	}
+	private void add()
+	{
+		System.out.println("Enter <visit>");
+		
+		lex();
+		
+		if(nextToken == INT_LIT){
+			lex();
+			
+			if(	lexeme.equals(keywords.get("keyword_StateHouse"))
+			 || lexeme.equals(keywords.get("keyword_PublicGarden"))	
+			 || lexeme.equals(keywords.get("keyword_NorthEnd"))
+			 || lexeme.equals(keywords.get("keword_GoHome"))
+			){
+				item();
+			}else{
+				error(lexeme);
+			}
+		}else{
+			error(lexeme);
+		}
+		
+		System.out.println("Exit <visit>");
+	}
+	private void places()
+	{
+		System.out.println("Enter <places>");
+		
+		lex();
+		
+		System.out.println("Exit <places>");
+	}
+
+	public void error(String lexeme)
+	{
+		System.out.println("ERROR:  " + lexeme);
+	}
+	
+
+}
+
+
