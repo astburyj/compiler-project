@@ -48,6 +48,7 @@ public class Main {
 	}
 
 	String [][] program;
+	ArrayList<String> variables = new ArrayList<String>();
 	
 	public void parse(BufferedReader br) throws IOException {
 		// Should be a "container" declared in here that will be the code tree
@@ -63,14 +64,14 @@ public class Main {
 			if(character == ' ' && !ignoreSpace) {
 				// end line
 				if(word.length() > 0) {
-					System.out.println(word);
+//					System.out.println(word);
 					lookerUpper(word);
 					line.add(word);
 					word = "";
 				}
 			} else if(character == ',' || character == '\n') {
 				if(word.length() > 0) {
-					System.out.println(word);
+//					System.out.println(word);
 					lookerUpper(word);
 					line.add(word);
 					word = "";
@@ -98,11 +99,11 @@ public class Main {
 				break;
 			}
 			System.out.println(translate(program[i]));
-			for(int r = 0; r < program[i].length; r++) {
-				System.out.print("["+program[i][r]+"] ");
-				
-			}
-			System.out.print("\n");
+//			for(int r = 0; r < program[i].length; r++) {
+//				System.out.print("["+program[i][r]+"] ");
+//				
+//			}
+//			System.out.print("\n");
 		}
 		System.out.println("END OF FILE");
 	    br.close();
@@ -111,6 +112,7 @@ public class Main {
 	public String translate(String[] line) {
 		String javaCode = "";
 		if(line.length == 4) {
+			/* ----------- CALL ----------- */
 			if(line[0].equals("call") &&
 				line[1] != null &&
 				line[2] != null &&
@@ -119,21 +121,26 @@ public class Main {
 				// ex: call "sup world" myMixTape
 				// if the variable is already in the hash then update it
 				
-				String type = "String";
-				// figure out the type of the variable, defaulting to string
-				if(line[1].contains("\"")) {
-					// is a string
-				} else {
-					// check if it is a number
-					if(isANumber(line[1])) {
-						// is a int or long
-						type = "long";
-					} else if(isADecimal(line[1])) {
-						// is a double or float
-						type = "double";
+				String type = "";
+				if(!variables.contains(line[2])) {
+					// figure out the type of the variable, defaulting to string
+					if(line[1].contains("\"")) {
+						// is a string
+						type = "String ";
+					} else {
+						// check if it is a number
+						if(isANumber(line[1])) {
+							// is a int or long
+							type = "long ";
+						} else if(isADecimal(line[1])) {
+							// is a double or float
+							type = "double ";
+						}
 					}
+					variables.add(line[2]);
 				}
-				javaCode = type+" "+line[2]+" = "+line[1]+";";
+				
+				javaCode = type+line[2]+" = "+line[1]+";";
 			}
 		}
 		return javaCode;
