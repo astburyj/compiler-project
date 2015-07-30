@@ -1,0 +1,22 @@
+make fetty, wap, count;
+
+turn_up
+
+	call fetty 16;
+	call wap 38;
+	call count 0;
+	when wap mo fetty then
+	turn_up
+		spitfire fetty;
+		call fetty fetty + 1;
+		spitfire fetty;
+	bye_felicia;
+
+	finna count turn_down 5 work
+	turn_up
+		spitfire fetty;
+		spitfire wap;
+		call count count + 1;
+	bye_felicia;
+bye_felicia
+.

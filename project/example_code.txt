@@ -1,9 +1,0 @@
-call "sup world" myMixTape,
-call 60 thisVar,
-call 60.6 anotherVar,
-
-when thisVar more than 10,
-  call 10 thisVar,
-
-finna doin it bout thisVar times,
-  spitfire myMixTape,

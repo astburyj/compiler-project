@@ -1,6 +1,0 @@
-call "Hello World" msg,
-when msg aint "",
-	finna bout 15 times
-		spitfire msg
-	mic drop
-mic drop
